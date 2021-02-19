@@ -1,0 +1,30 @@
+.GreyTable {
+	margin: 10px;
+	table-layout: fixed;
+	border-collapse: collapse;
+	border: 0;
+}
+
+.GreyTableHeader {
+	background-color: #f1f2f2;
+	border: 1px solid #d8dbdd;
+}
+
+.GreyTableText {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 50px;
+	padding-right: 50px;
+	text-align: left;
+}
+
+.GreyTableRow {
+	min-height: 50px;
+	vertical-align: middle;
+	border: 1px solid #d8dbdd;
+}
+
+.GreyTableButtonTD {
+	text-align: center;
+	vertical-align: middle;
+}

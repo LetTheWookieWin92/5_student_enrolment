@@ -20,7 +20,7 @@ export function getClasses() {
 }
 
 export function getClass(id) {
-	return classes.find((m) => m._id === id);
+	return classes.find((c) => c._id === id);
 }
 
 /*
