@@ -34,7 +34,9 @@ class Classes extends Component {
 							<tr className={styles.GreyTableRow} key={classItem._id}>
 								<td className={styles.GreyTableText}>{classItem.code}</td>
 								<td className={styles.GreyTableText}>{classItem.name}</td>
-								<td className={styles.GreyTableText}></td>
+								<td className={styles.GreyTableText}>
+									{classItem.enrolments.length + " / " + classItem.maxCapacity}
+								</td>
 								<td className={styles.GreyTableButtonTD}>
 									<button
 										className="btn btn-info btn-sm"
