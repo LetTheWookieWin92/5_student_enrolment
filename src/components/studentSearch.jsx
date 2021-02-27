@@ -57,37 +57,54 @@ class StudentSearch extends Component {
 		}
 	}
 
+	resetSearch() {
+		let searchStatus = "idle";
+		this.setState({ searchStatus, searchResults: [] });
+	}
+
 	render() {
 		if (this.state.searchStatus == "results") {
-			console.log(this.state.searchResults);
 			return (
 				<React.Fragment>
 					<h1 className={headingStyles.pageTitle}>Results</h1>
-					<table className={styles.GreyTable}>
-						<thead className={styles.GreyTableHeader}>
-							<tr>
-								<th className={styles.GreyTableText}>SID</th>
-								<th className={styles.GreyTableText}>Name</th>
-								<th className={styles.GreyTableText}>Profile</th>
-							</tr>
-						</thead>
-						<tbody>
-							{this.state.searchResults.map((searchResult) => (
-								<tr className={styles.GreyTableRow} key={searchResult._id}>
-									<td className={styles.GreyTableText}>{searchResult.sid}</td>
-									<td className={styles.GreyTableText}>{searchResult.name}</td>
-									<td className={styles.GreyTableButtonTD}>
-										<button
-											className="btn btn-info btn-sm"
-											onClick={() => this.handleOpenClassList(searchResult)}
-										>
-											Open
-										</button>
-									</td>
+					<p className={styles.feedbackPara}>
+						{this.state.searchResults.length} records found.
+					</p>
+					<button
+						className="btn btn-info btn-sm fBtn"
+						onClick={() => this.resetSearch()}
+					>
+						Back to search
+					</button>
+					{this.state.searchResults.length > 0 && (
+						<table className={styles.GreyTable}>
+							<thead className={styles.GreyTableHeader}>
+								<tr>
+									<th className={styles.GreyTableText}>SID</th>
+									<th className={styles.GreyTableText}>Name</th>
+									<th className={styles.GreyTableText}>Profile</th>
 								</tr>
-							))}
-						</tbody>
-					</table>
+							</thead>
+							<tbody>
+								{this.state.searchResults.map((searchResult) => (
+									<tr className={styles.GreyTableRow} key={searchResult._id}>
+										<td className={styles.GreyTableText}>{searchResult.sid}</td>
+										<td className={styles.GreyTableText}>
+											{searchResult.name}
+										</td>
+										<td className={styles.GreyTableButtonTD}>
+											<button
+												className="btn btn-info btn-sm"
+												onClick={() => this.handleOpenClassList(searchResult)}
+											>
+												Open
+											</button>
+										</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					)}
 				</React.Fragment>
 			);
 		} else {
