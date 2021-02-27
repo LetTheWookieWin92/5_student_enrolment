@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { getStudents } from "../services/studentService";
 
+// Components
+import StudentProfile from "./studentProfile";
+
 // CSS
 import styles from "./css/styles.module.css";
 import headingStyles from "./css/headingStyles.module.css";
@@ -12,6 +15,7 @@ class StudentSearch extends Component {
 		searchStatus: "idle",
 		students: getStudents(),
 		searchResults: [],
+		currentProfile: null,
 
 		// Contains all error messages
 		errors: {
@@ -59,7 +63,12 @@ class StudentSearch extends Component {
 
 	resetSearch() {
 		let searchStatus = "idle";
-		this.setState({ searchStatus, searchResults: [] });
+		this.setState({ searchStatus, searchResults: [], currentProfile: null });
+	}
+
+	openStudentProfile(student) {
+		let searchStatus = "profile";
+		this.setState({ searchStatus, currentProfile: student });
 	}
 
 	render() {
@@ -95,7 +104,7 @@ class StudentSearch extends Component {
 										<td className={styles.GreyTableButtonTD}>
 											<button
 												className="btn btn-info btn-sm"
-												onClick={() => this.handleOpenClassList(searchResult)}
+												onClick={() => this.openStudentProfile(searchResult)}
 											>
 												Open
 											</button>
@@ -105,6 +114,12 @@ class StudentSearch extends Component {
 							</tbody>
 						</table>
 					)}
+				</React.Fragment>
+			);
+		} else if (this.state.searchStatus == "profile") {
+			return (
+				<React.Fragment>
+					<StudentProfile student={this.state.currentProfile} />
 				</React.Fragment>
 			);
 		} else {

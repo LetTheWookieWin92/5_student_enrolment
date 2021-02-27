@@ -5,12 +5,11 @@ import Classes from "./classes";
 import StudentSearch from "./studentSearch";
 
 // CSS
-import styles from "./css/styles.module.css";
 import headingStyles from "./css/headingStyles.module.css";
 
 class Home extends Component {
 	state = {
-		interfaceMode: "search",
+		interfaceMode: "none",
 	};
 
 	// Changes between search and class interfaces
