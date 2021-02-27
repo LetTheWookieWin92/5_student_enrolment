@@ -61,10 +61,11 @@ class StudentSearch extends Component {
 		}
 	}
 
-	resetSearch() {
+	resetSearch = () => {
+		console.log("here");
 		let searchStatus = "idle";
 		this.setState({ searchStatus, searchResults: [], currentProfile: null });
-	}
+	};
 
 	openStudentProfile(student) {
 		let searchStatus = "profile";
@@ -119,7 +120,10 @@ class StudentSearch extends Component {
 		} else if (this.state.searchStatus == "profile") {
 			return (
 				<React.Fragment>
-					<StudentProfile student={this.state.currentProfile} />
+					<StudentProfile
+						student={this.state.currentProfile}
+						onBackPress={this.resetSearch}
+					/>
 				</React.Fragment>
 			);
 		} else {
