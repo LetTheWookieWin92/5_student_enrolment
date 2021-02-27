@@ -1,14 +1,20 @@
 const students = [
 	{
 		_id: "55tefgca3eeb7fdhtrcd471815",
-		sid: 123456789,
+		sid: "123456789",
 		name: "John Smith",
+		enrolments: [],
+	},
+	{
+		_id: "55tefgca3eeb7fdhtrcd471815",
+		sid: "987654321",
+		name: "Amy Crackhouse",
 		enrolments: [],
 	},
 ];
 
-export function getStudent(sid) {
-	return students.find((s) => s._sid === sid);
+export function getStudents() {
+	return students;
 }
 
 /*
