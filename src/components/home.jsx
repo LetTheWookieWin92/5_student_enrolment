@@ -20,22 +20,47 @@ class Home extends Component {
 	render() {
 		return (
 			<React.Fragment>
-				<h1 className={headingStyles.pageTitle}>Home</h1>
-				<button
-					className="btn btn-info btn-sm homeButton"
-					onClick={() => this.switchState("search")}
-				>
-					Student Search
-				</button>
-				&nbsp;
-				<button
-					className="btn btn-info btn-sm homeButton"
-					onClick={() => this.switchState("classes")}
-				>
-					Class Enrolments
-				</button>
-				{this.state.interfaceMode == "classes" && <Classes />}
-				{this.state.interfaceMode == "search" && <StudentSearch />}
+				<h1 className={headingStyles.pageTitle}>Enrolment Interface</h1>
+
+				{this.state.interfaceMode == "none" && (
+					<div>
+						<button
+							className="btn btn-info btn-sm homeButton"
+							onClick={() => this.switchState("search")}
+						>
+							Student Search
+						</button>
+						&nbsp;
+						<button
+							className="btn btn-info btn-sm homeButton"
+							onClick={() => this.switchState("classes")}
+						>
+							Class Enrolments
+						</button>
+					</div>
+				)}
+				{this.state.interfaceMode == "classes" && (
+					<div>
+						<button
+							className="btn btn-info btn-sm homeButton"
+							onClick={() => this.switchState("search")}
+						>
+							Student Search
+						</button>
+						<Classes />
+					</div>
+				)}
+				{this.state.interfaceMode == "search" && (
+					<div>
+						<button
+							className="btn btn-info btn-sm homeButton"
+							onClick={() => this.switchState("classes")}
+						>
+							Class Enrolments
+						</button>
+						<StudentSearch />
+					</div>
+				)}
 			</React.Fragment>
 		);
 	}
