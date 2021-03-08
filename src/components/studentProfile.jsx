@@ -63,9 +63,14 @@ class StudentProfile extends Component {
 									<td className={styles.GreyTableButtonTD}>
 										<button
 											className="btn btn-warning btn-sm"
-											onClick={() => console.log("delete")}
+											onClick={() =>
+												this.props.onDeleteEnrolment(
+													this.state.student._id,
+													enrolmentItem
+												)
+											}
 										>
-											Open
+											Remove
 										</button>
 									</td>
 								</tr>
@@ -80,13 +85,13 @@ class StudentProfile extends Component {
 
 export default StudentProfile;
 
-/*
+/* 
 
-// Filters array for sid
-			const filteredSearch = this.state.students.filter(
-				(student) => student.sid == sid
-			);
+<button
+											className="btn btn-warning btn-sm"
+											onClick={() => console.log("delete")}
+										>
+											Remove
+										</button>
 
-
-
-                */
+										*/
