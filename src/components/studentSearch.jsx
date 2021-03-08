@@ -10,18 +10,24 @@ import headingStyles from "./css/headingStyles.module.css";
 import formStyles from "./css/formStyles.module.css";
 
 class StudentSearch extends Component {
-	state = {
-		searchValue: "",
-		searchStatus: "idle",
-		students: getStudents(),
-		searchResults: [],
-		currentProfile: null,
+	constructor(props) {
+		super(props);
+		this.state = {
+			searchValue: "",
+			searchStatus: "idle",
+			students: getStudents(),
+			searchResults: [],
+			currentProfile: null,
 
-		// Contains all error messages
-		errors: {
-			sid: "",
-		},
-	};
+			// Contains all error messages
+			errors: {
+				sid: "",
+			},
+		};
+
+		// 'this' is out of scope of deleteEnrolment, until it is bound.
+		this.deleteEnrolment = this.deleteEnrolment.bind(this);
+	}
 
 	//Called when the input field changes
 	updateSearchValue = (searchValue) => {
@@ -62,7 +68,6 @@ class StudentSearch extends Component {
 	}
 
 	resetSearch = () => {
-		console.log("here");
 		let searchStatus = "idle";
 		this.setState({ searchStatus, searchResults: [], currentProfile: null });
 	};
@@ -70,6 +75,25 @@ class StudentSearch extends Component {
 	openStudentProfile(student) {
 		let searchStatus = "profile";
 		this.setState({ searchStatus, currentProfile: student });
+	}
+
+	/* Deletes a class from student enrolments using class id. Called in student profile */
+	deleteEnrolment(student, classID) {
+		let studentsCurrent = this.state.students;
+
+		// Get student
+		let targetStudentArr = studentsCurrent.filter((s) => s._id === student);
+
+		// Remove enrolment
+		let targetStudentEnrolments = targetStudentArr[0].enrolments.filter(
+			(e) => e !== classID
+		);
+
+		targetStudentArr[0].enrolments = targetStudentEnrolments;
+		studentsCurrent[studentsCurrent.indexOf(targetStudentArr[0])] =
+			targetStudentArr[0];
+
+		this.setState({ students: studentsCurrent });
 	}
 
 	render() {
@@ -123,6 +147,7 @@ class StudentSearch extends Component {
 					<StudentProfile
 						student={this.state.currentProfile}
 						onBackPress={this.resetSearch}
+						onDeleteEnrolment={this.deleteEnrolment}
 					/>
 				</React.Fragment>
 			);
