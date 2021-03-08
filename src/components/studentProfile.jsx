@@ -13,10 +13,9 @@ class StudentProfile extends Component {
 		classes: getClasses(),
 	};
 
-	lookUpClass(studentEnrolments) {
-		{
-			/*need to return the class object for each enrolment to obtain code and name*/
-		}
+	/* Looks up class object from student enrolments using class id */
+	lookUpClass(classID) {
+		return this.state.classes.filter((classObj) => classObj._id == classID);
 	}
 
 	render() {
@@ -41,20 +40,34 @@ class StudentProfile extends Component {
 					Back to search
 				</button>
 
+				{/* checks for a student's enrolments from student object, if present create table */}
 				{this.state.student.enrolments.length > 0 && (
 					<table className={styles.GreyTable}>
 						<thead className={styles.GreyTableHeader}>
 							<tr>
 								<th className={styles.GreyTableText}>Code</th>
 								<th className={styles.GreyTableText}>Name</th>
+								<th className={styles.GreyTableText}>Actions</th>
 							</tr>
 						</thead>
 						<tbody>
-							{/* Use look up function above to get the name/code of each enrolment */}
+							{/* Looks up class codes and names to populate table */}
 							{this.state.student.enrolments.map((enrolmentItem) => (
-								<tr className={styles.GreyTableRow} key={enrolmentItem._id}>
-									<td className={styles.GreyTableText}>{enrolmentItem.code}</td>
-									<td className={styles.GreyTableText}>{enrolmentItem.name}</td>
+								<tr className={styles.GreyTableRow} key={enrolmentItem}>
+									<td className={styles.GreyTableText}>
+										{this.lookUpClass(enrolmentItem)[0].code}
+									</td>
+									<td className={styles.GreyTableText}>
+										{this.lookUpClass(enrolmentItem)[0].name}
+									</td>
+									<td className={styles.GreyTableButtonTD}>
+										<button
+											className="btn btn-warning btn-sm"
+											onClick={() => console.log("delete")}
+										>
+											Open
+										</button>
+									</td>
 								</tr>
 							))}
 						</tbody>
