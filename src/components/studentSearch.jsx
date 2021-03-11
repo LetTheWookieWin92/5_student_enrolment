@@ -3,6 +3,10 @@ import { getStudents } from "../services/studentService";
 
 // Components
 import StudentProfile from "./studentProfile";
+import Classes from "./classes";
+
+//Services
+import { getClasses } from "../services/classService";
 
 // CSS
 import styles from "./css/styles.module.css";
@@ -16,6 +20,7 @@ class StudentSearch extends Component {
 			searchValue: "",
 			searchStatus: "idle",
 			students: getStudents(),
+			classes: getClasses(),
 			searchResults: [],
 			currentProfile: null,
 
@@ -93,7 +98,18 @@ class StudentSearch extends Component {
 		studentsCurrent[studentsCurrent.indexOf(targetStudentArr[0])] =
 			targetStudentArr[0];
 
-		this.setState({ students: studentsCurrent });
+		// Get class
+		let classesCurrent = this.state.classes;
+		let targetClassesArr = classesCurrent.filter((c) => c._id === classID);
+		// Remove enrolment
+		let targetClassEnrolments = targetClassesArr[0].enrolments.filter(
+			(e) => e !== student
+		);
+		targetClassesArr[0].enrolments = targetClassEnrolments;
+		classesCurrent[classesCurrent.indexOf(targetClassesArr[0])] =
+			targetClassesArr[0];
+
+		this.setState({ students: studentsCurrent, classes: classesCurrent });
 	}
 
 	render() {
