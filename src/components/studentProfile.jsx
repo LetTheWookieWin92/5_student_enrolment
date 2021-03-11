@@ -94,7 +94,9 @@ class StudentProfile extends Component {
 						Add new
 					</button>
 				)}
-				{this.state.profileMode == true && <Classes />}
+				{this.state.profileMode == true && (
+					<Classes student={this.state.student} />
+				)}
 			</React.Fragment>
 		);
 	}
