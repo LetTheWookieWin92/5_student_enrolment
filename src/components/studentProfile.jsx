@@ -11,11 +11,17 @@ import styles from "./css/styles.module.css";
 import headingStyles from "./css/headingStyles.module.css";
 
 class StudentProfile extends Component {
-	state = {
-		student: this.props.student,
-		classes: getClasses(),
-		profileMode: false,
-	};
+	constructor(props) {
+		super(props);
+		this.state = {
+			student: this.props.student,
+			classes: getClasses(),
+			profileMode: false,
+		};
+
+		// 'this' is out of scope of onAddEnrolment, until it is bound.
+		this.onAddEnrolment = this.onAddEnrolment.bind(this);
+	}
 
 	/* Looks up class object from student enrolments using class id */
 	lookUpClass(classID) {
@@ -27,6 +33,11 @@ class StudentProfile extends Component {
 		let newProfileMode = this.state.profileMode;
 		newProfileMode = !newProfileMode;
 		this.setState({ profileMode: newProfileMode });
+	}
+
+	//Passes the data to parent component
+	onAddEnrolment(student, classID) {
+		this.props.onAddEnrolment(student, classID);
 	}
 
 	render() {
@@ -95,7 +106,10 @@ class StudentProfile extends Component {
 					</button>
 				)}
 				{this.state.profileMode == true && (
-					<Classes student={this.state.student} />
+					<Classes
+						student={this.state.student}
+						onAddEnrolment={this.onAddEnrolment}
+					/>
 				)}
 			</React.Fragment>
 		);
@@ -103,14 +117,3 @@ class StudentProfile extends Component {
 }
 
 export default StudentProfile;
-
-/* 
-
-<button
-											className="btn btn-warning btn-sm"
-											onClick={() => console.log("delete")}
-										>
-											Remove
-										</button>
-
-										*/

@@ -30,7 +30,8 @@ class StudentSearch extends Component {
 			},
 		};
 
-		// 'this' is out of scope of deleteEnrolment, until it is bound.
+		// 'this' is out of scope of addEnrolment and deleteEnrolment, until it is bound.
+		this.addEnrolment = this.addEnrolment.bind(this);
 		this.deleteEnrolment = this.deleteEnrolment.bind(this);
 	}
 
@@ -80,6 +81,28 @@ class StudentSearch extends Component {
 	openStudentProfile(student) {
 		let searchStatus = "profile";
 		this.setState({ searchStatus, currentProfile: student });
+	}
+
+	addEnrolment(student, classID) {
+		// Get student
+		let studentsCurrent = this.state.students;
+		let targetStudentArr = studentsCurrent.filter((s) => s._id === student);
+
+		// Add enrolment
+		targetStudentArr[0].enrolments.push(classID);
+		studentsCurrent[studentsCurrent.indexOf(targetStudentArr[0])] =
+			targetStudentArr[0];
+
+		// Get class
+		let classesCurrent = this.state.classes;
+		let targetClassesArr = classesCurrent.filter((c) => c._id === classID);
+
+		// Add enrolment
+		targetClassesArr[0].enrolments.push(student._id);
+		classesCurrent[classesCurrent.indexOf(targetClassesArr[0])] =
+			targetClassesArr[0];
+
+		this.setState({ students: studentsCurrent, classes: classesCurrent });
 	}
 
 	/* Deletes a class from student enrolments using class id. Called in student profile */
@@ -163,6 +186,7 @@ class StudentSearch extends Component {
 					<StudentProfile
 						student={this.state.currentProfile}
 						onBackPress={this.resetSearch}
+						onAddEnrolment={this.addEnrolment}
 						onDeleteEnrolment={this.deleteEnrolment}
 					/>
 				</React.Fragment>
