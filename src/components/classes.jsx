@@ -10,6 +10,8 @@ class Classes extends Component {
 		classes: getClasses(),
 	};
 
+	//testing github credentials
+
 	handleOpenClassList = (classItem) => {
 		// Creates new movies array, excluding particular movie ID
 		//const newMovies = this.state.movies.filter((m) => m._id !== movie._id);
