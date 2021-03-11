@@ -10,7 +10,7 @@ class Classes extends Component {
 		classes: getClasses(),
 		student: this.props.student,
 	};
-	//test
+	//updating
 	filterOccupiedClasses() {
 		/* For each student class, filter out from allClasses*/
 		let studentClasses = this.state.student.enrolments;
