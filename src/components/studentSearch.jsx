@@ -1,23 +1,39 @@
 import React, { Component } from "react";
 import { getStudents } from "../services/studentService";
 
+// Components
+import StudentProfile from "./studentProfile";
+import Classes from "./classes";
+
+//Services
+import { getClasses } from "../services/classService";
+
 // CSS
 import styles from "./css/styles.module.css";
 import headingStyles from "./css/headingStyles.module.css";
 import formStyles from "./css/formStyles.module.css";
 
 class StudentSearch extends Component {
-	state = {
-		searchValue: "",
-		searchStatus: "idle",
-		students: getStudents(),
-		searchResults: [],
+	constructor(props) {
+		super(props);
+		this.state = {
+			searchValue: "",
+			searchStatus: "idle",
+			students: getStudents(),
+			classes: getClasses(),
+			searchResults: [],
+			currentProfile: null,
 
-		// Contains all error messages
-		errors: {
-			sid: "",
-		},
-	};
+			// Contains all error messages
+			errors: {
+				sid: "",
+			},
+		};
+
+		// 'this' is out of scope of addEnrolment and deleteEnrolment, until it is bound.
+		this.addEnrolment = this.addEnrolment.bind(this);
+		this.deleteEnrolment = this.deleteEnrolment.bind(this);
+	}
 
 	//Called when the input field changes
 	updateSearchValue = (searchValue) => {
@@ -57,9 +73,66 @@ class StudentSearch extends Component {
 		}
 	}
 
-	resetSearch() {
+	resetSearch = () => {
 		let searchStatus = "idle";
-		this.setState({ searchStatus, searchResults: [] });
+		this.setState({ searchStatus, searchResults: [], currentProfile: null });
+	};
+
+	openStudentProfile(student) {
+		let searchStatus = "profile";
+		this.setState({ searchStatus, currentProfile: student });
+	}
+
+	addEnrolment(student, classID) {
+		// Get student
+		let studentsCurrent = this.state.students;
+		let targetStudentArr = studentsCurrent.filter((s) => s._id === student);
+
+		// Add enrolment
+		targetStudentArr[0].enrolments.push(classID);
+		studentsCurrent[studentsCurrent.indexOf(targetStudentArr[0])] =
+			targetStudentArr[0];
+
+		// Get class
+		let classesCurrent = this.state.classes;
+		let targetClassesArr = classesCurrent.filter((c) => c._id === classID);
+
+		// Add enrolment
+		targetClassesArr[0].enrolments.push(student._id);
+		classesCurrent[classesCurrent.indexOf(targetClassesArr[0])] =
+			targetClassesArr[0];
+
+		this.setState({ students: studentsCurrent, classes: classesCurrent });
+	}
+
+	/* Deletes a class from student enrolments using class id. Called in student profile */
+	deleteEnrolment(student, classID) {
+		let studentsCurrent = this.state.students;
+
+		// Get student
+		let targetStudentArr = studentsCurrent.filter((s) => s._id === student);
+
+		// Remove enrolment
+		let targetStudentEnrolments = targetStudentArr[0].enrolments.filter(
+			(e) => e !== classID
+		);
+
+		targetStudentArr[0].enrolments = targetStudentEnrolments;
+		studentsCurrent[studentsCurrent.indexOf(targetStudentArr[0])] =
+			targetStudentArr[0];
+
+		// Get class
+		let classesCurrent = this.state.classes;
+		let targetClassesArr = classesCurrent.filter((c) => c._id === classID);
+		// Remove enrolment
+		let targetClassEnrolments = targetClassesArr[0].enrolments.filter(
+			(e) => e !== student
+		);
+		targetClassesArr[0].enrolments = targetClassEnrolments;
+		classesCurrent[classesCurrent.indexOf(targetClassesArr[0])] =
+			targetClassesArr[0];
+
+		this.setState({ students: studentsCurrent, classes: classesCurrent });
 	}
 
 	render() {
@@ -95,7 +168,7 @@ class StudentSearch extends Component {
 										<td className={styles.GreyTableButtonTD}>
 											<button
 												className="btn btn-info btn-sm"
-												onClick={() => this.handleOpenClassList(searchResult)}
+												onClick={() => this.openStudentProfile(searchResult)}
 											>
 												Open
 											</button>
@@ -105,6 +178,17 @@ class StudentSearch extends Component {
 							</tbody>
 						</table>
 					)}
+				</React.Fragment>
+			);
+		} else if (this.state.searchStatus == "profile") {
+			return (
+				<React.Fragment>
+					<StudentProfile
+						student={this.state.currentProfile}
+						onBackPress={this.resetSearch}
+						onAddEnrolment={this.addEnrolment}
+						onDeleteEnrolment={this.deleteEnrolment}
+					/>
 				</React.Fragment>
 			);
 		} else {
