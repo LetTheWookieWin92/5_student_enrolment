@@ -10,16 +10,10 @@ class Classes extends Component {
 		classes: getClasses(),
 	};
 
-	handleOpenClassList = (classItem) => {
-		// Creates new movies array, excluding particular movie ID
-		//const newMovies = this.state.movies.filter((m) => m._id !== movie._id);
-		console.log(classItem._id);
-	};
-
 	render() {
 		return (
 			<React.Fragment>
-				<h1 className={headingStyles.pageTitle}>Class Enrolments</h1>
+				<h4 className={headingStyles.pageTitle}>Class Availability</h4>
 				<table className={styles.GreyTable}>
 					<thead className={styles.GreyTableHeader}>
 						<tr>
@@ -38,12 +32,7 @@ class Classes extends Component {
 									{classItem.enrolments.length + " / " + classItem.maxCapacity}
 								</td>
 								<td className={styles.GreyTableButtonTD}>
-									<button
-										className="btn btn-info btn-sm"
-										onClick={() => this.handleOpenClassList(classItem)}
-									>
-										Open
-									</button>
+									<button className="btn btn-warning btn-sm">Add</button>
 								</td>
 							</tr>
 						))}
