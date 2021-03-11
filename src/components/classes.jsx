@@ -45,8 +45,7 @@ class Classes extends Component {
 						<tr>
 							<th className={styles.GreyTableText}>Code</th>
 							<th className={styles.GreyTableText}>Name</th>
-							<th className={styles.GreyTableText}>Capacity</th>
-							<th className={styles.GreyTableText}>Class List</th>
+							<th className={styles.GreyTableText}>Actions</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -54,11 +53,18 @@ class Classes extends Component {
 							<tr className={styles.GreyTableRow} key={classItem._id}>
 								<td className={styles.GreyTableText}>{classItem.code}</td>
 								<td className={styles.GreyTableText}>{classItem.name}</td>
-								<td className={styles.GreyTableText}>
-									{classItem.enrolments.length + " / " + classItem.maxCapacity}
-								</td>
 								<td className={styles.GreyTableButtonTD}>
-									<button className="btn btn-warning btn-sm">Add</button>
+									<button
+										className="btn btn-warning btn-sm"
+										onClick={() =>
+											this.props.onAddEnrolment(
+												this.state.student._id,
+												classItem._id
+											)
+										}
+									>
+										Add
+									</button>
 								</td>
 							</tr>
 						))}
