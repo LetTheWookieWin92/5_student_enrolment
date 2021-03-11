@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 
+// Components
+import Classes from "./classes";
+
 //Services
 import { getClasses } from "../services/classService";
 
@@ -11,11 +14,19 @@ class StudentProfile extends Component {
 	state = {
 		student: this.props.student,
 		classes: getClasses(),
+		profileMode: false,
 	};
 
 	/* Looks up class object from student enrolments using class id */
 	lookUpClass(classID) {
 		return this.state.classes.filter((classObj) => classObj._id == classID);
+	}
+
+	/* Changes the interface to add enrolment mode */
+	changemode() {
+		let newProfileMode = this.state.profileMode;
+		newProfileMode = !newProfileMode;
+		this.setState({ profileMode: newProfileMode });
 	}
 
 	render() {
@@ -25,13 +36,10 @@ class StudentProfile extends Component {
 				<p>
 					<b>Student ID:</b> {this.state.student.sid}
 				</p>
-
 				<h4 className={headingStyles.pageTitle}>Enrolment</h4>
-
 				<p className={styles.feedbackPara}>
 					{this.state.student.enrolments.length} records found.
 				</p>
-
 				{/*Calls the reset search function in parent component studentSearch*/}
 				<button
 					className="btn btn-info btn-sm fBtn"
@@ -39,7 +47,6 @@ class StudentProfile extends Component {
 				>
 					Back to search
 				</button>
-
 				{/* checks for a student's enrolments from student object, if present create table */}
 				{this.state.student.enrolments.length > 0 && (
 					<table className={styles.GreyTable}>
@@ -78,6 +85,16 @@ class StudentProfile extends Component {
 						</tbody>
 					</table>
 				)}
+				&nbsp;
+				{this.state.profileMode == false && (
+					<button
+						className="btn btn-success btn-sm fBtn"
+						onClick={() => this.changemode()}
+					>
+						Add new
+					</button>
+				)}
+				{this.state.profileMode == true && <Classes />}
 			</React.Fragment>
 		);
 	}

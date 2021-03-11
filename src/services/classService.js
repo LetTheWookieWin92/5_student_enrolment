@@ -13,7 +13,7 @@ const classes = [
 		name: "Economics I",
 		maxCapacity: 5,
 		prerequisites: [],
-		enrolments: [],
+		enrolments: ["55tefgca3eeb7fdhtrcd471815"],
 	},
 ];
 
